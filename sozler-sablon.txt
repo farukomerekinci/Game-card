@@ -1,0 +1,767 @@
+BI' NAKARAT - SOZ SABLONU
+=========================
+Her sarkinin altindaki iki satiri doldur.
+Doldurunca dosyanin tamamini kopyalayip uygulamada
+Ice / disa aktar ekranindaki kutuya yapistir ve Aktar'a bas.
+Bos biraktigin sarkilar hazir ipucu satirlariyla oynanir.
+
+
+
+===== 90'LAR =====
+
+Şarkı ismi: Şımarık — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ölürüm Sana — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Unutmamalı — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kış Güneşi — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Salına Salına Sinsice — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Hepsi Senin mi? — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Araba — Mustafa Sandal
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Aya Benzer — Mustafa Sandal
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Karabiberim — Serdar Ortaç
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Abone — Yonca Evcimik
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bandıra Bandıra — Yonca Evcimik
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Hakkını Helal Et — Mirkelam
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Her Gece — Mirkelam
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yemin Ettim — Kayahan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Odalarda Işıksızım — Kayahan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Med Cezir — Levent Yüksel
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Uslanmıyor Bu — Levent Yüksel
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ateşle Barut — Hakan Peker
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Benimle Oynama — Burak Kut
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yaparım Bilirsin — Emel Müftüoğlu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ellerim Bomboş — Fatih Erkoç
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yalnızlık Mevsimi — Kargo
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Delikanlım — Yıldız Tilbe
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Esmer Günler — Nilüfer
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Vazgeçtim Dünyadan — Şebnem Ferah
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sigara — Şebnem Ferah
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: İstanbul'da Sonbahar — Teoman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kaçın Kurası — Sezen Aksu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Hadi Bakalım — Sezen Aksu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Şinanay — Sezen Aksu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Gülümse — Sezen Aksu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Zor Kadın — Sertab Erener
+Söz 1: 
+Söz 2: 
+
+
+
+===== 2000'LER =====
+
+Şarkı ismi: Kuzu Kuzu — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Dudu — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Hüp — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bounce — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Uyan — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kop — Mustafa Sandal
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: İsyankar — Mustafa Sandal
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Jest Oldu — Mustafa Sandal
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Melek Yüzlüm — Mustafa Sandal
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Mesafe — Serdar Ortaç
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Heyecanlısın — Serdar Ortaç
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Dansöz — Serdar Ortaç
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Rakkas — Sezen Aksu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Everyway That I Can — Sertab Erener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Aşk Ölmez Biz Ölürüz — Sertab Erener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kumsalda — Sertab Erener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Açık Adres — Sertab Erener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Çakkıdı — Kenan Doğulu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Dursun Zaman — Kenan Doğulu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Shake It Up Şekerim — Kenan Doğulu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Tutamıyorum Zamanı — Kenan Doğulu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yakar Geçerim — Ajda Pekkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Resim — Ajda Pekkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ara Sıra — Ajda Pekkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Acele Etme — Hande Yener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kırmızı — Hande Yener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kelepçe — Hande Yener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Romeo — Hande Yener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bodrum — Hande Yener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Düm Tek Tek — Hadise
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Aşk Kaç Beden Giyer — Hadise
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sözde Ayrılık — Gülşen
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Özledim — Murat Boz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Geri Dönüş Olsa — Murat Boz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Aşkı Bulamam Ben — Murat Boz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Belki Bir Gün Özlersin — Emre Aydın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Afili Yalnızlık — Emre Aydın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Her Şeyi Yak — Duman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bu Akşam — Duman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Elleri Ellerime — Duman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Cambaz — mor ve ötesi
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bir Derdim Var — mor ve ötesi
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Deli — mor ve ötesi
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sevda Çiçeği — mor ve ötesi
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Paramparça — Teoman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Paparazzi — Teoman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Renkli Rüyalar Oteli — Teoman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Can Kırıkları — Şebnem Ferah
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bir Kadın Çizeceksin — maNga
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Cevapsız Sorular — maNga
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Dünyanın Sonuna Doğmuşum — maNga
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Böyle Kahpedir Dünya — Gripin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Aşk Nereden Nereye — Gripin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Belki Üstümüzden Bir Kuş Geçer — Yüksek Sadakat
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Dur Yağmur — Pinhani
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: For Real — Athena
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Olmaz Oğlan — Hepsi
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Tempo — Hepsi
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Elbette — Candan Erçetin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Neden — Candan Erçetin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Annem — Candan Erçetin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bu mudur — Nil Karaibrahimgil
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Pırlanta — Nil Karaibrahimgil
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Hakkında Her Şeyi Duymak İstiyorum — Nil Karaibrahimgil
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Alıştım — Ebru Gündeş
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yak Gel — Funda Arar
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Divane — Yaşar
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bize de Bu Yakışır — Yaşar
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Vazgeçtim — Gökhan Özen
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: İki Melek — Bengü
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Masal — Aydilge
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Direniyorum — Rafet El Roman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ölürüm — Halil Sezai
+Söz 1: 
+Söz 2: 
+
+
+
+===== 2010'LAR =====
+
+Şarkı ismi: Öp — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Adımı Kalbine Yaz — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yolla — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ateş Et ve Unut — Mustafa Sandal
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kara Kalp — Serdar Ortaç
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Poşet — Serdar Ortaç
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ex Aşkım — Kenan Doğulu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Baş Harfi Benim — Kenan Doğulu
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bambaşka Biri — Ajda Pekkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ya Ya Ya Ya — Hande Yener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Naber — Hande Yener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Hasta — Hande Yener
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Mesajımı Almıştır O — Hadise
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Superman — Hadise
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Prens — Hadise
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sıfır Tolerans — Hadise
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yatcaz Kalkcaz Ordayım — Gülşen
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bangır Bangır — Gülşen
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Of... Of — Gülşen
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Çalkala — Demet Akalın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Aşk — Demet Akalın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Nazar — Demet Akalın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Giderli — Demet Akalın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sallana Sallana — Murat Boz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Hayat Öpücüğü — Murat Boz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Janti — Murat Boz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kalamam Arkadaş — Murat Boz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Vaziyetler — Sıla
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: İnşallah — Sıla
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Acısa da Öldürmez — Sıla
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yabancı — Sıla
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Boş Yere — Sıla
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ah Be Kardeşim — Yalın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Anlat Güzel mi Oralar — Yalın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Keşke — Yalın
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Senden Daha Güzel — Duman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Eyvallah — Duman
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sen Yağmursun — Gripin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Buzdan Şato — Model
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Aşk Yok Olmaktır — Model
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sana Değer — Kolpa
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ne Güzel Güldün — Pinhani
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: We Could Be the Same — maNga
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yaparsın Aşkım — Nil Karaibrahimgil
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Eksik — Mustafa Ceceli
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Şarkı — Mustafa Ceceli
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Gül Rengi — Mustafa Ceceli
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Bak Bir Varmış Bir Yokmuş — Mustafa Ceceli
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sen Sevda mısın — Buray
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: İstersen — Buray
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Mecburen — Buray
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Kalbimin Tek Sahibine — İrem Derici
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Zalim — İrem Derici
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Adeyyo — Ece Seçkin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Cevapsız Çınlama — Aleyna Tilki
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sen Olsan Bari — Aleyna Tilki
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Roman — Edis
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Martılar — Edis
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Fikrimden Geceleri — Mabel Matiz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Antidepresan — Mabel Matiz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Miş Miş — Simge
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Yankı — Simge
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Ela — Reynmen
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Eteği Belinde — Manuş Baba
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Dön Bebeğim — Manuş Baba
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Beni Vur — Ziynet Sali
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Padişah — Sibel Can
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Güzelim — Ayşe Hatun Önal
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sen Yoluna Ben Yoluma — Gökhan Türkmen
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sen Gelmez Oldun — Bilal Sonses
+Söz 1: 
+Söz 2: 
+
+
+
+===== 2020'LER =====
+
+Şarkı ismi: Geççek — Tarkan
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Öyle Kolaysa — Mabel Matiz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Merhametim Yok — Melike Şahin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Nalan — Emir Can İğrek
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Lolipop — Gülşen
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Dinle — Aleyna Tilki
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sana Bir Şey Olmasın — Edis
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Karakol — Mabel Matiz
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Aslan Gibi — Melike Şahin
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Sarhoş — Emir Can İğrek
+Söz 1: 
+Söz 2: 
+
+Şarkı ismi: Derdim Olsun — Reynmen
+Söz 1: 
+Söz 2: 
+

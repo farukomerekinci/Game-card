@@ -285,7 +285,7 @@
   </div>
   <div class="scroll">
     <div class="lab">Toplu yapıştır</div>
-    <textarea class="inp big-inp" id="ioIn" placeholder="Şarkı Adı | Sanatçı | 1. satır | 2. satır"></textarea>
+    <textarea class="inp big-inp" id="ioIn" placeholder="Şarkı ismi: Kuzu Kuzu — Tarkan&#10;Söz 1: …&#10;Söz 2: …&#10;&#10;ya da&#10;&#10;Kuzu Kuzu | Tarkan | 1. satır | 2. satır"></textarea>
     <div class="lab">Yeni kartların dönemi</div>
     <div class="chips" id="ioEra">
       <div class="chip" data-era="90">90'lar</div>
@@ -296,7 +296,9 @@
     <button class="btn" id="ioImport" style="margin-top:12px">Aktar</button>
     <div class="tiny" id="ioMsg" style="text-align:left;margin-top:8px"></div>
     <div class="note">
-      Her satıra bir kart:<br>
+      İki biçimi de anlar. Şablon dosyasının doldurulmuş hâlini olduğu gibi yapıştırabilirsin:<br>
+      <code>Şarkı ismi: Kuzu Kuzu — Tarkan</code><br><code>Söz 1: …</code><br><code>Söz 2: …</code><br><br>
+      ya da her satıra bir kart:<br>
       <code>Şarkı Adı | Sanatçı | 1. satır | 2. satır</code><br><br>
       Destede zaten olan bir şarkıyı yazarsan sadece satırları güncellenir, yenisi eklenmez.
       Bu ekranda kaydettiğin her şey sadece bu telefonun tarayıcısında durur.
@@ -880,27 +882,66 @@ function exportText(){
   return JSON.stringify({v:1, lyr:LYR, custom:CUSTOM});
 }
 
+/* Yapıştırılan metni iki biçimde de anlar:
+   1) Şarkı | Sanatçı | 1. satır | 2. satır
+   2) Şarkı ismi: Şarkı — Sanatçı        (şablon dosyası)
+      Söz 1: ...
+      Söz 2: ...                                            */
+function parseImport(raw){
+  const out = [];
+  let cur = null;
+  raw.split(/\r?\n/).forEach(line => {
+    const t0 = line.trim();
+    if(!t0 || t0.startsWith("#") || t0.startsWith("=====") || /^BI' NAKARAT/i.test(t0)) return;
+
+    const head = t0.match(/^(?:şarkı\s*ismi|şarkı\s*adı|şarkı|sarki)\s*[:：]\s*(.+)$/i);
+    if(head){
+      const rest = head[1].trim();
+      const sp = rest.split(/\s+[—–-]\s+/);
+      cur = { t: sp[0].trim(), a: (sp.slice(1).join(" - ").trim() || "Bilinmiyor"), l: [] };
+      out.push(cur);
+      return;
+    }
+
+    const lyr = t0.match(/^(?:söz|soz)\s*\d?\s*[:：]\s*(.*)$/i);
+    if(lyr){
+      if(cur && cur.l.length < 2 && lyr[1].trim()) cur.l.push(lyr[1].trim());
+      return;
+    }
+
+    if(t0.includes("|")){
+      const parts = t0.split("|").map(x => x.trim());
+      if(!parts[0]) return;
+      cur = null;
+      out.push({ t: parts[0], a: parts[1] || "Bilinmiyor", l: [parts[2]||"", parts[3]||""].filter(Boolean) });
+      return;
+    }
+
+    // başlıktan sonra gelen düz satırlar da söz sayılır
+    if(cur && cur.l.length < 2) cur.l.push(t0);
+  });
+  return out.filter(o => o.t);
+}
+
 $("#ioImport").onclick = () => {
   const raw = $("#ioIn").value.trim();
   if(!raw){ $("#ioMsg").textContent = "Kutu boş."; return; }
-  let added = 0, updated = 0, bad = 0;
-  raw.split(/\r?\n/).forEach(line => {
-    line = line.trim();
-    if(!line) return;
-    const parts = line.split("|").map(x => x.trim());
-    if(parts.length < 2 || !parts[0]){ bad++; return; }
-    const t = parts[0], a = parts[1] || "Bilinmiyor";
-    const l1 = parts[2] || "", l2 = parts[3] || "";
-    const k = t + "|" + a;
+  const items = parseImport(raw);
+  if(!items.length){ $("#ioMsg").textContent = "Hiçbir satır anlaşılamadı."; return; }
+  let added = 0, updated = 0, filled = 0;
+  items.forEach(o => {
+    const t = o.t, a = o.a, k = t + "|" + a;
     const exists = allCards().some(s => keyOf(s) === k);
     if(!exists){ CUSTOM.push({t, a, d: ioEra, c:["(bu kart için söz satırı girilmedi)","—"]}); added++; }
     else updated++;
-    if(l1 || l2) LYR[k] = [l1, l2];
+    const l1 = o.l[0] || "", l2 = o.l[1] || "";
+    if(l1 || l2){ LYR[k] = [l1, l2]; filled++; }
   });
   saveLyr();
   $("#ioOut").value = exportText();
   $("#ioIn").value = "";
-  $("#ioMsg").textContent = added + " yeni kart, " + updated + " güncelleme" + (bad ? ", " + bad + " satır anlaşılamadı" : "") + ".";
+  $("#ioMsg").textContent = items.length + " kart okundu · " + filled + " tanesinin satırları doldu · " +
+    added + " yeni kart eklendi.";
 };
 
 $("#ioCopy").onclick = () => {
