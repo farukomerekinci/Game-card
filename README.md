@@ -5,7 +5,8 @@ Tek dosyalık, internet gerektirmeyen kart oyunu. `index.html` dosyasını iPhon
 ## Nasıl oynanır
 
 Destede **186 Türkçe pop kartı** var (90'lar → 2020'ler). Her kartta şarkı adı, sanatçı, dönem ve
-oyun için yazılmış **iki satır ipucu** bulunur.
+kartın altında **iki satır** bulunur. Bu iki satırı istediğin metinle sen doldurursun
+(bkz. *Söz satırlarını kendin gir*); doldurmadığın kartlar hazır ipucu satırlarıyla oynanır.
 
 Üç mod:
 
@@ -27,16 +28,41 @@ oyun için yazılmış **iki satır ipucu** bulunur.
    ya da GitHub Pages'te yayınla.
 2. Safari'de **Paylaş → Ana Ekrana Ekle** dersen tam ekran uygulama gibi açılır.
 
-## Kart eklemek
+## Söz satırlarını kendin gir
+
+Ana ekranda iki düğme var:
+
+**Kartları düzenle** — 186 kartın listesi. Bir karta dokun, alttaki iki satıra ne yazarsan
+kartta o görünür. `+` ile destede olmayan yeni şarkı da ekleyebilirsin.
+
+**İçe / dışa aktar** — toplu doldurmak için. Her satıra bir kart gelecek şekilde yapıştır:
+
+```
+Şarkı Adı | Sanatçı | 1. satır | 2. satır
+Kuzu Kuzu | Tarkan | ... | ...
+```
+
+- Destede zaten olan bir şarkıyı yazarsan sadece satırları güncellenir, kart ikilenmez.
+- Destede olmayan bir şarkı yazarsan yeni kart olarak eklenir (dönemini o ekrandaki
+  düğmelerden seçersin).
+- Aynı ekrandaki **yedek** kutusu, girdiğin her şeyin JSON hâlidir. Kopyalayıp saklarsan
+  başka bir telefonda yapıştırıp "Yedeği geri yükle" ile aynı desteyi kurabilirsin.
+
+Girdiğin satırlar sadece o telefonun tarayıcısında (localStorage) durur, dosyaya yazılmaz.
+
+**Sadece sözlü kartlar** düğmesini açarsan tur yalnızca kendi satırlarını girdiğin kartlardan kurulur.
+
+## Kod içinden kart eklemek
 
 `index.html` içindeki `SONGS` dizisine satır ekle:
 
 ```js
-{t:"Şarkı Adı", a:"Sanatçı", d:"10", c:["Birinci ipucu satırı","İkinci ipucu satırı"]},
+{t:"Şarkı Adı", a:"Sanatçı", d:"10", c:["Alt satır 1","Alt satır 2"]},
 ```
 
 `d` alanı dönem: `"90"`, `"00"`, `"10"`, `"20"`.
 
 ## Not
 
-Kartlardaki iki satır şarkı sözü değil, bu oyun için yazılmış tariflerdir; dönem etiketleri yaklaşıktır.
+Kutudan çıkan hâliyle kartlardaki iki satır şarkı sözü değil, oyun için yazılmış tariflerdir;
+o satırları kendi metninle değiştirmek sana kalmış. Dönem etiketleri yaklaşıktır.

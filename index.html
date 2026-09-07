@@ -98,6 +98,25 @@
   .sheet h2{margin:0 0 12px;font-size:22px}
   .sheet p{color:var(--muted);font-size:14.5px;line-height:1.6}
   .sheet b{color:var(--ink)}
+
+  /* ---------- KART YÖNETİMİ ---------- */
+  .head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .head h2{margin:0;font-size:19px;flex:1}
+  .inp{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+    color:var(--ink);border-radius:14px;padding:13px 14px;font-size:16px;font-family:inherit;-webkit-user-select:text;user-select:text}
+  .inp::placeholder{color:rgba(255,253,247,.45)}
+  textarea.inp{min-height:64px;resize:vertical;line-height:1.4}
+  textarea.big-inp{min-height:210px;font-size:14px}
+  .rowline{display:flex;gap:8px;margin-top:8px}
+  .rowline .btn{padding:14px;font-size:15px}
+  .lab{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:14px 0 6px}
+  .crow{display:flex;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer}
+  .crow b{font-size:15px;font-weight:700;display:block}
+  .crow span{font-size:12.5px;color:var(--muted)}
+  .crow .flag{font-size:15px;opacity:.9;flex:0 0 auto}
+  .note{font-size:12.5px;color:var(--muted);line-height:1.5;background:rgba(255,255,255,.05);
+    border-radius:14px;padding:12px;margin-top:10px}
+  .note code{font-size:12px;color:var(--gold);word-break:break-word}
 </style>
 </head>
 <body>
@@ -145,6 +164,19 @@
         <div class="chip sel" data-sec="90">90 sn</div>
         <div class="chip" data-sec="120">120 sn</div>
       </div>
+    </div>
+
+    <div class="panel">
+      <h3>Söz kartları</h3>
+      <div class="chips" id="lyrChips">
+        <div class="chip" data-only="1">Sadece sözlü kartlar</div>
+      </div>
+      <div class="rowline" style="margin-top:10px">
+        <button class="btn ghost" id="manageBtn">Kartları düzenle</button>
+        <button class="btn ghost" id="ioBtn">İçe / dışa aktar</button>
+      </div>
+      <div class="note">Bir karta söz satırı yazarsan kartta ipucu yerine <b>senin yazdığın iki satır</b> görünür.
+        Şu an <b id="ownCount">0</b> kartta kendi satırların var.</div>
     </div>
 
     <div class="panel">
@@ -197,6 +229,86 @@
   <div class="foot">
     <button class="btn" id="againBtn">Yeni tur</button>
     <button class="btn ghost" id="homeBtn" style="margin-top:8px">Ana ekran</button>
+  </div>
+</section>
+
+<!-- ================= KART LİSTESİ ================= -->
+<section id="cards" class="screen">
+  <div class="head">
+    <button class="iconbtn" id="cardsBack">‹</button>
+    <h2>Kartlar</h2>
+    <button class="iconbtn" id="newCardBtn">+</button>
+  </div>
+  <input class="inp" id="search" placeholder="Şarkı veya sanatçı ara…" autocomplete="off">
+  <div class="tiny" id="cardsInfo" style="text-align:left;margin:10px 2px 0"></div>
+  <div class="scroll" id="cardList" style="margin-top:4px"></div>
+</section>
+
+<!-- ================= KART DÜZENLE ================= -->
+<section id="editor" class="screen">
+  <div class="head">
+    <button class="iconbtn" id="edBack">‹</button>
+    <h2 id="edHead">Kartı düzenle</h2>
+  </div>
+  <div class="scroll">
+    <div class="lab">Şarkı adı</div>
+    <input class="inp" id="edTitle" autocomplete="off">
+    <div class="lab">Sanatçı</div>
+    <input class="inp" id="edArtist" autocomplete="off">
+    <div class="lab">Dönem</div>
+    <div class="chips" id="edEra">
+      <div class="chip" data-era="90">90'lar</div>
+      <div class="chip" data-era="00">2000'ler</div>
+      <div class="chip sel" data-era="10">2010'lar</div>
+      <div class="chip" data-era="20">2020'ler</div>
+    </div>
+    <div class="lab">Kartta görünecek 1. satır</div>
+    <textarea class="inp" id="edL1" placeholder="Kartın altındaki ilk satır"></textarea>
+    <div class="lab">Kartta görünecek 2. satır</div>
+    <textarea class="inp" id="edL2" placeholder="Kartın altındaki ikinci satır"></textarea>
+    <div class="note">Bu iki satırı boş bırakırsan kart, hazır ipucu satırlarıyla oynanır.</div>
+  </div>
+  <div class="foot">
+    <button class="btn" id="edSave">Kaydet</button>
+    <div class="rowline">
+      <button class="btn ghost" id="edClear">Satırları temizle</button>
+      <button class="btn ghost" id="edDelete">Kartı sil</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= İÇE / DIŞA AKTAR ================= -->
+<section id="io" class="screen">
+  <div class="head">
+    <button class="iconbtn" id="ioBack">‹</button>
+    <h2>İçe / dışa aktar</h2>
+  </div>
+  <div class="scroll">
+    <div class="lab">Toplu yapıştır</div>
+    <textarea class="inp big-inp" id="ioIn" placeholder="Şarkı Adı | Sanatçı | 1. satır | 2. satır"></textarea>
+    <div class="lab">Yeni kartların dönemi</div>
+    <div class="chips" id="ioEra">
+      <div class="chip" data-era="90">90'lar</div>
+      <div class="chip" data-era="00">2000'ler</div>
+      <div class="chip sel" data-era="10">2010'lar</div>
+      <div class="chip" data-era="20">2020'ler</div>
+    </div>
+    <button class="btn" id="ioImport" style="margin-top:12px">Aktar</button>
+    <div class="tiny" id="ioMsg" style="text-align:left;margin-top:8px"></div>
+    <div class="note">
+      Her satıra bir kart:<br>
+      <code>Şarkı Adı | Sanatçı | 1. satır | 2. satır</code><br><br>
+      Destede zaten olan bir şarkıyı yazarsan sadece satırları güncellenir, yenisi eklenmez.
+      Bu ekranda kaydettiğin her şey sadece bu telefonun tarayıcısında durur.
+    </div>
+    <div class="lab">Yedek (dışa aktar)</div>
+    <textarea class="inp big-inp" id="ioOut" readonly></textarea>
+    <div class="rowline">
+      <button class="btn ghost" id="ioCopy">Kopyala</button>
+      <button class="btn ghost" id="ioRestore">Yedeği geri yükle</button>
+    </div>
+    <div class="note">Yedek metnini bir yere kaydet; başka telefonda üstteki kutuya yapıştırıp
+      "Yedeği geri yükle" dersen tüm kartların geri gelir.</div>
   </div>
 </section>
 
@@ -417,6 +529,7 @@ const ERA_LABEL = {"90":"90'LAR","00":"2000'LER","10":"2010'LAR","20":"2020'LER"
 const state = {
   mode: "ipucu",
   eras: ["90","00","10","20"],
+  onlyLyrics: false,
   seconds: 90,
   teams: 1,
   deck: [], idx: 0, revealed: false,
@@ -427,7 +540,7 @@ const state = {
 /* ---------- ayarları hatırla ---------- */
 function saveCfg(){
   try{ localStorage.setItem("binakarat", JSON.stringify({
-    mode:state.mode, eras:state.eras, seconds:state.seconds, teams:state.teams
+    mode:state.mode, eras:state.eras, seconds:state.seconds, teams:state.teams, onlyLyrics:state.onlyLyrics
   })); }catch(e){}
 }
 function loadCfg(){
@@ -438,8 +551,35 @@ function loadCfg(){
     if(Array.isArray(c.eras) && c.eras.length) state.eras = c.eras;
     if(typeof c.seconds === "number") state.seconds = c.seconds;
     if(c.teams) state.teams = c.teams;
+    if(typeof c.onlyLyrics === "boolean") state.onlyLyrics = c.onlyLyrics;
   }catch(e){}
 }
+
+/* ---------- kendi söz kartların ----------
+   LYR: "Şarkı|Sanatçı" -> ["1. satır","2. satır"]
+   CUSTOM: destede olmayan, senin eklediğin kartlar
+------------------------------------------------ */
+let LYR = {}, CUSTOM = [];
+const keyOf = s => s.t + "|" + s.a;
+
+function loadLyr(){
+  try{ LYR = JSON.parse(localStorage.getItem("binakarat_lyr") || "{}") || {}; }catch(e){ LYR = {}; }
+  try{ CUSTOM = JSON.parse(localStorage.getItem("binakarat_custom") || "[]") || []; }catch(e){ CUSTOM = []; }
+}
+function saveLyr(){
+  try{
+    localStorage.setItem("binakarat_lyr", JSON.stringify(LYR));
+    localStorage.setItem("binakarat_custom", JSON.stringify(CUSTOM));
+  }catch(e){ alert("Kayıt yapılamadı. Safari'de özel gezinme kapalı olmalı."); }
+}
+function allCards(){ return SONGS.concat(CUSTOM); }
+function ownLines(s){
+  const l = LYR[keyOf(s)];
+  return (l && l.filter(x => x && x.trim()).length) ? l.filter(x => x && x.trim()) : null;
+}
+function hasLines(s){ return !!ownLines(s); }
+function linesOf(s){ return ownLines(s) || s.c || []; }
+function esc(x){ return String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
 /* ---------- ana ekran ---------- */
 function paintHome(){
@@ -451,9 +591,20 @@ function paintHome(){
     el.classList.toggle("sel", +el.dataset.sec === state.seconds));
   document.querySelectorAll("#teamChips .chip").forEach(el=>
     el.classList.toggle("sel", +el.dataset.team === state.teams));
-  $("#totalCount").textContent = pool().length;
+  document.querySelectorAll("#lyrChips .chip").forEach(el=>
+    el.classList.toggle("sel", state.onlyLyrics));
+  const n = pool().length, own = allCards().filter(hasLines).length;
+  $("#totalCount").textContent = n;
+  $("#startBtn").disabled = n === 0;
+  $("#startBtn").style.opacity = n === 0 ? .45 : 1;
+  $("#startBtn").textContent = n === 0 ? "Bu filtrede kart yok" : "Başla";
+  $("#ownCount").textContent = own;
 }
-function pool(){ return SONGS.filter(s => state.eras.includes(s.d)); }
+function pool(){
+  let p = allCards().filter(s => state.eras.includes(s.d));
+  if(state.onlyLyrics) p = p.filter(hasLines);
+  return p;
+}
 
 document.querySelectorAll("#modeList .mode").forEach(el=>{
   el.onclick = () => { state.mode = el.dataset.mode; saveCfg(); paintHome(); };
@@ -473,6 +624,9 @@ document.querySelectorAll("#timeChips .chip").forEach(el=>{
 });
 document.querySelectorAll("#teamChips .chip").forEach(el=>{
   el.onclick = () => { state.teams = +el.dataset.team; saveCfg(); paintHome(); };
+});
+document.querySelectorAll("#lyrChips .chip").forEach(el=>{
+  el.onclick = () => { state.onlyLyrics = !state.onlyLyrics; saveCfg(); paintHome(); };
 });
 
 /* ---------- ekran geçişi ---------- */
@@ -538,7 +692,7 @@ function renderCard(){
   if(state.mode === "nakarat" && !state.revealed){
     clue.innerHTML = '<div style="opacity:.75">Nakaratı sen söyle 🎤</div>';
   } else {
-    clue.innerHTML = s.c.map(x => "<div>" + x + "</div>").join("");
+    clue.innerHTML = linesOf(s).map(x => "<div>" + esc(x) + "</div>").join("");
   }
 
   $("#revealBtn").textContent =
@@ -630,6 +784,146 @@ $("#againBtn").onclick = () => {
 };
 $("#homeBtn").onclick = () => { stopTimer(); show("home"); paintHome(); };
 
+/* ============================================================
+   KART YÖNETİMİ: liste, düzenleyici, içe/dışa aktarma
+   ============================================================ */
+let edRef = null;      // düzenlenen kart (null = yeni kart)
+let edEra = "10";
+
+$("#manageBtn").onclick = () => { $("#search").value = ""; renderList(); show("cards"); };
+$("#cardsBack").onclick = () => { show("home"); paintHome(); };
+$("#search").oninput = renderList;
+
+function renderList(){
+  const q = ($("#search").value || "").toLocaleLowerCase("tr");
+  const list = allCards()
+    .map((s,i) => ({s, custom: i >= SONGS.length}))
+    .filter(o => !q || (o.s.t + " " + o.s.a).toLocaleLowerCase("tr").includes(q));
+  const own = allCards().filter(hasLines).length;
+  $("#cardsInfo").textContent = allCards().length + " kart · " + own + " tanesinde kendi satırların var";
+  $("#cardList").innerHTML = list.map(o =>
+    '<div class="crow" data-k="' + esc(keyOf(o.s)) + '">' +
+      '<span class="flag">' + (hasLines(o.s) ? "🎵" : "·") + '</span>' +
+      '<div style="flex:1"><b>' + esc(o.s.t) + '</b><span>' + esc(o.s.a) + " · " + ERA_LABEL[o.s.d] +
+        (o.custom ? " · senin kartın" : "") + '</span></div><span style="opacity:.5">›</span>' +
+    '</div>').join("") || '<div class="tiny" style="text-align:left">Eşleşen kart yok.</div>';
+  document.querySelectorAll("#cardList .crow").forEach(el=>{
+    el.onclick = () => openEditor(allCards().find(s => keyOf(s) === el.dataset.k));
+  });
+}
+
+function setEdEra(e){
+  edEra = e;
+  document.querySelectorAll("#edEra .chip").forEach(el => el.classList.toggle("sel", el.dataset.era === e));
+}
+document.querySelectorAll("#edEra .chip").forEach(el => el.onclick = () => setEdEra(el.dataset.era));
+
+function openEditor(card){
+  edRef = card || null;
+  const l = card ? (LYR[keyOf(card)] || []) : [];
+  $("#edHead").textContent = card ? "Kartı düzenle" : "Yeni kart";
+  $("#edTitle").value  = card ? card.t : "";
+  $("#edArtist").value = card ? card.a : "";
+  $("#edL1").value = l[0] || "";
+  $("#edL2").value = l[1] || "";
+  setEdEra(card ? card.d : "10");
+  const isCustom = card ? CUSTOM.some(c => keyOf(c) === keyOf(card)) : true;
+  $("#edDelete").style.display = (card && isCustom) ? "block" : "none";
+  $("#edTitle").readOnly = !!(card && !isCustom);
+  $("#edArtist").readOnly = !!(card && !isCustom);
+  show("editor");
+}
+
+$("#newCardBtn").onclick = () => openEditor(null);
+$("#edBack").onclick = () => { renderList(); show("cards"); };
+
+$("#edSave").onclick = () => {
+  const t = $("#edTitle").value.trim(), a = $("#edArtist").value.trim();
+  if(!t){ alert("Şarkı adı boş olamaz."); return; }
+  const l1 = $("#edL1").value.trim(), l2 = $("#edL2").value.trim();
+  const oldKey = edRef ? keyOf(edRef) : null;
+  const newKey = t + "|" + a;
+
+  if(edRef && CUSTOM.some(c => keyOf(c) === oldKey)){
+    const c = CUSTOM.find(c => keyOf(c) === oldKey);
+    c.t = t; c.a = a; c.d = edEra;
+    if(oldKey !== newKey) delete LYR[oldKey];
+  } else if(!edRef){
+    if(allCards().some(s => keyOf(s) === newKey)){ alert("Bu kart zaten var."); return; }
+    CUSTOM.push({t, a, d: edEra, c:["(bu kart için söz satırı girilmedi)","—"]});
+  }
+  if(l1 || l2) LYR[newKey] = [l1, l2]; else delete LYR[newKey];
+  saveLyr(); renderList(); show("cards");
+};
+
+$("#edClear").onclick = () => { $("#edL1").value = ""; $("#edL2").value = ""; };
+
+$("#edDelete").onclick = () => {
+  if(!edRef) return;
+  if(!confirm("\"" + edRef.t + "\" kartı silinsin mi?")) return;
+  const k = keyOf(edRef);
+  CUSTOM = CUSTOM.filter(c => keyOf(c) !== k);
+  delete LYR[k];
+  saveLyr(); renderList(); show("cards");
+};
+
+/* ---------- içe / dışa aktarma ---------- */
+let ioEra = "10";
+$("#ioBtn").onclick = () => { $("#ioMsg").textContent = ""; $("#ioOut").value = exportText(); show("io"); };
+$("#ioBack").onclick = () => { show("home"); paintHome(); };
+document.querySelectorAll("#ioEra .chip").forEach(el => el.onclick = () => {
+  ioEra = el.dataset.era;
+  document.querySelectorAll("#ioEra .chip").forEach(x => x.classList.toggle("sel", x.dataset.era === ioEra));
+});
+
+function exportText(){
+  return JSON.stringify({v:1, lyr:LYR, custom:CUSTOM});
+}
+
+$("#ioImport").onclick = () => {
+  const raw = $("#ioIn").value.trim();
+  if(!raw){ $("#ioMsg").textContent = "Kutu boş."; return; }
+  let added = 0, updated = 0, bad = 0;
+  raw.split(/\r?\n/).forEach(line => {
+    line = line.trim();
+    if(!line) return;
+    const parts = line.split("|").map(x => x.trim());
+    if(parts.length < 2 || !parts[0]){ bad++; return; }
+    const t = parts[0], a = parts[1] || "Bilinmiyor";
+    const l1 = parts[2] || "", l2 = parts[3] || "";
+    const k = t + "|" + a;
+    const exists = allCards().some(s => keyOf(s) === k);
+    if(!exists){ CUSTOM.push({t, a, d: ioEra, c:["(bu kart için söz satırı girilmedi)","—"]}); added++; }
+    else updated++;
+    if(l1 || l2) LYR[k] = [l1, l2];
+  });
+  saveLyr();
+  $("#ioOut").value = exportText();
+  $("#ioIn").value = "";
+  $("#ioMsg").textContent = added + " yeni kart, " + updated + " güncelleme" + (bad ? ", " + bad + " satır anlaşılamadı" : "") + ".";
+};
+
+$("#ioCopy").onclick = () => {
+  const ta = $("#ioOut");
+  ta.select(); ta.setSelectionRange(0, 999999);
+  try{ document.execCommand("copy"); }catch(e){}
+  if(navigator.clipboard) navigator.clipboard.writeText(ta.value).catch(()=>{});
+  $("#ioMsg").textContent = "Yedek kopyalandı.";
+};
+
+$("#ioRestore").onclick = () => {
+  const raw = $("#ioIn").value.trim();
+  if(!raw){ $("#ioMsg").textContent = "Yedeği üstteki kutuya yapıştır."; return; }
+  try{
+    const o = JSON.parse(raw);
+    if(!o || typeof o !== "object" || !o.lyr) throw 0;
+    LYR = o.lyr || {}; CUSTOM = Array.isArray(o.custom) ? o.custom : [];
+    saveLyr();
+    $("#ioIn").value = ""; $("#ioOut").value = exportText();
+    $("#ioMsg").textContent = "Yedek geri yüklendi: " + Object.keys(LYR).length + " kartta söz satırı var.";
+  }catch(e){ $("#ioMsg").textContent = "Bu metin bir yedek değil. Toplu ekleme için 'Aktar' düğmesini kullan."; }
+};
+
 /* ---------- kaydırma (swipe) ---------- */
 (function(){
   const c = $("#card");
@@ -666,6 +960,7 @@ document.addEventListener("keydown", e => {
 
 /* ---------- başlat ---------- */
 loadCfg();
+loadLyr();
 paintHome();
 </script>
 </body>
