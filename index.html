@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#120a1f">
+<title>Bi' Nakarat — Türkçe Pop Tahmin Oyunu</title>
+<style>
+  :root{
+    --bg:#120a1f; --bg2:#1d0f33;
+    --card:#b28ae0; --card2:#9d74d6;
+    --ink:#fffdf7; --muted:rgba(255,253,247,.72);
+    --ok:#2fd07a; --pass:#ff7b72; --gold:#ffd166;
+    --r:26px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a1450 0%,var(--bg) 60%,#0b0616 100%);
+    color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    -webkit-user-select:none;user-select:none;overflow:hidden;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .screen{position:fixed;inset:0;display:none;flex-direction:column;
+    padding:calc(env(safe-area-inset-top) + 14px) 18px calc(env(safe-area-inset-bottom) + 14px);}
+  .screen.on{display:flex}
+
+  /* ---------- HOME ---------- */
+  .logo{text-align:center;margin-top:6px}
+  .logo h1{margin:0;font-size:34px;line-height:1.05;letter-spacing:-.5px;font-weight:800}
+  .logo h1 span{color:var(--gold)}
+  .logo p{margin:8px 0 0;color:var(--muted);font-size:14px}
+  .panel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:14px;margin-top:14px}
+  .panel h3{margin:0 0 10px;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:var(--ink);
+    padding:10px 14px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+  .chip.sel{background:var(--gold);color:#2a1450;border-color:var(--gold)}
+  .modes{display:grid;gap:8px}
+  .mode{display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.04);border-radius:16px;padding:12px;cursor:pointer}
+  .mode.sel{border-color:var(--gold);background:rgba(255,209,102,.12)}
+  .mode b{display:block;font-size:15px}
+  .mode small{color:var(--muted);font-size:12.5px;line-height:1.35;display:block;margin-top:3px}
+  .mode .dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.35);flex:0 0 auto;margin-top:2px}
+  .mode.sel .dot{border-color:var(--gold);background:var(--gold);box-shadow:inset 0 0 0 4px #2a1450}
+  .row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+  .btn{width:100%;border:0;border-radius:18px;padding:17px;font-size:17px;font-weight:800;
+    background:var(--gold);color:#2a1450;cursor:pointer;font-family:inherit}
+  .btn.ghost{background:rgba(255,255,255,.1);color:var(--ink)}
+  .scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;padding-bottom:8px}
+  .foot{padding-top:10px}
+  .tiny{font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.45}
+
+  /* ---------- GAME ---------- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .pill{background:rgba(255,255,255,.09);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700}
+  .pill.time{min-width:74px;text-align:center}
+  .pill.time.warn{background:#ff7b72;color:#2a1450}
+  .iconbtn{background:rgba(255,255,255,.09);border:0;color:var(--ink);width:38px;height:38px;border-radius:50%;font-size:17px;cursor:pointer}
+  .stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
+  .card{
+    width:100%;max-width:360px;aspect-ratio:.66;max-height:min(66vh,540px);
+    background:linear-gradient(160deg,var(--card),var(--card2));
+    border-radius:var(--r);padding:26px 24px 46px;display:flex;flex-direction:column;justify-content:space-between;
+    box-shadow:0 26px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.35);
+    position:relative;touch-action:pan-y;will-change:transform;
+  }
+  .notes{position:absolute;top:18px;right:20px;font-size:20px;letter-spacing:2px;opacity:.95}
+  .title{font-size:clamp(26px,7.6vw,34px);line-height:1.06;font-weight:800;letter-spacing:-.8px;
+    padding-right:54px;overflow-wrap:anywhere;hyphens:auto}
+  .title.long{font-size:clamp(21px,6vw,27px)}
+  .artist{margin-top:10px;font-size:15px;font-weight:700;opacity:.85}
+  .clue{font-size:clamp(15px,4.3vw,17px);line-height:1.4;font-weight:600;opacity:.95}
+  .clue div+div{margin-top:8px}
+  .badge{position:absolute;left:24px;bottom:16px;font-size:11px;font-weight:800;letter-spacing:1.5px;opacity:.7}
+  .hidden-title{filter:blur(14px);opacity:.55}
+  .tapnote{position:absolute;left:0;right:0;bottom:-26px;text-align:center;font-size:12px;color:var(--muted)}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+  .act{border:0;border-radius:18px;padding:18px 10px;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer}
+  .act.no{background:rgba(255,255,255,.12);color:var(--ink)}
+  .act.yes{background:var(--ok);color:#04261a}
+  .reveal{margin-top:12px;width:100%;background:rgba(255,255,255,.1);border:0;color:var(--ink);
+    border-radius:14px;padding:13px;font-weight:700;font-size:14px;font-family:inherit;cursor:pointer}
+
+  /* ---------- END ---------- */
+  .big{font-size:56px;font-weight:800;text-align:center;margin:6px 0 0;color:var(--gold)}
+  .list{margin-top:12px}
+  .item{display:flex;gap:10px;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px}
+  .item .m{font-size:15px}
+  .item b{font-weight:700}
+  .item span{color:var(--muted);font-size:12.5px}
+  .sheet{position:fixed;inset:0;background:rgba(8,4,16,.9);display:none;flex-direction:column;
+    padding:calc(env(safe-area-inset-top) + 20px) 20px calc(env(safe-area-inset-bottom) + 20px);z-index:20}
+  .sheet.on{display:flex}
+  .sheet h2{margin:0 0 12px;font-size:22px}
+  .sheet p{color:var(--muted);font-size:14.5px;line-height:1.6}
+  .sheet b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- ================= HOME ================= -->
+<section id="home" class="screen on">
+  <div class="scroll">
+    <div class="logo">
+      <h1>Bi' Nakarat <span>Ses Ver</span></h1>
+      <p>Türkçe Pop · <b id="totalCount">0</b> kart · 90'lar → 2020'ler</p>
+    </div>
+
+    <div class="panel">
+      <h3>Nasıl oynanır</h3>
+      <div class="modes" id="modeList">
+        <div class="mode sel" data-mode="ipucu">
+          <div class="dot"></div>
+          <div><b>İpucu Modu</b><small>Kartta şarkı adı bulanık. Sen alttaki iki satırı yüksek sesle oku, diğerleri şarkıyı tahmin etsin. Tahmin gelince karta dokun, cevap açılsın.</small></div>
+        </div>
+        <div class="mode" data-mode="nakarat">
+          <div class="dot"></div>
+          <div><b>Nakarat Modu</b><small>Kartta şarkı adı açık. Telefonu kimseye gösterme, nakaratı sen mırıldan/söyle. Bilen puanı alsın.</small></div>
+        </div>
+        <div class="mode" data-mode="acik">
+          <div class="dot"></div>
+          <div><b>Açık Kart</b><small>Her şey görünür. Karışık çalma listesi gibi; sırayla bakıp söylersiniz.</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Dönem</h3>
+      <div class="chips" id="eraChips">
+        <div class="chip sel" data-era="90">90'lar</div>
+        <div class="chip sel" data-era="00">2000'ler</div>
+        <div class="chip sel" data-era="10">2010'lar</div>
+        <div class="chip sel" data-era="20">2020'ler</div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <h3 style="margin:0">Süre</h3>
+      </div>
+      <div class="chips" id="timeChips" style="margin-top:8px">
+        <div class="chip" data-sec="0">Süresiz</div>
+        <div class="chip" data-sec="60">60 sn</div>
+        <div class="chip sel" data-sec="90">90 sn</div>
+        <div class="chip" data-sec="120">120 sn</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Takım</h3>
+      <div class="chips" id="teamChips">
+        <div class="chip sel" data-team="1">Tek grup</div>
+        <div class="chip" data-team="2">2 takım</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn" id="startBtn">Başla</button>
+    <div class="tiny">Kartı sağa kaydır = <b>bildi</b> · sola kaydır = <b>pas</b><br>Dönem etiketleri yaklaşıktır.</div>
+  </div>
+</section>
+
+<!-- ================= GAME ================= -->
+<section id="game" class="screen">
+  <div class="topbar">
+    <button class="iconbtn" id="quitBtn">✕</button>
+    <div class="pill" id="teamPill">Skor 0</div>
+    <div class="pill time" id="timePill">90</div>
+  </div>
+  <div class="stage">
+    <div class="card" id="card">
+      <div>
+        <div class="notes">♫ ♪</div>
+        <div class="title" id="cTitle">—</div>
+        <div class="artist" id="cArtist">—</div>
+      </div>
+      <div class="clue" id="cClue"></div>
+      <div class="badge" id="cBadge"></div>
+    </div>
+  </div>
+  <button class="reveal" id="revealBtn">Cevabı göster</button>
+  <div class="actions">
+    <button class="act no" id="passBtn">Pas</button>
+    <button class="act yes" id="okBtn">Bildi +1</button>
+  </div>
+</section>
+
+<!-- ================= END ================= -->
+<section id="end" class="screen">
+  <div class="scroll">
+    <h2 style="text-align:center;margin:10px 0 0;font-size:20px" id="endTitle">Tur bitti</h2>
+    <div class="big" id="endScore">0</div>
+    <div class="tiny" id="endSub">doğru tahmin</div>
+    <div class="list" id="endList"></div>
+  </div>
+  <div class="foot">
+    <button class="btn" id="againBtn">Yeni tur</button>
+    <button class="btn ghost" id="homeBtn" style="margin-top:8px">Ana ekran</button>
+  </div>
+</section>
+
+<div class="sheet" id="sheet">
+  <h2>Turu bitir?</h2>
+  <p>Devam edersen skor korunur.</p>
+  <div style="margin-top:auto">
+    <button class="btn" id="contBtn">Devam et</button>
+    <button class="btn ghost" id="endNowBtn" style="margin-top:8px">Turu bitir</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   KART DESTESİ
+   t: şarkı, a: sanatçı, d: dönem (yaklaşık), c: iki satır ipucu
+   İpucular şarkı sözü değil, oyun için yazılmış tariflerdir.
+   ============================================================ */
+const SONGS = [
+/* ---------------- 90'LAR ---------------- */
+{t:"Şımarık",a:"Tarkan",d:"90",c:["Klibinde devrilen bir nikâh masası var","Öpücük sesi bu ülkeden dünyaya yayıldı"]},
+{t:"Ölürüm Sana",a:"Tarkan",d:"90",c:["90'ların en çok satan albümüne adını verdi","Kapkara saçlı, beyaz gömlekli bir dönem başlattı"]},
+{t:"Unutmamalı",a:"Tarkan",d:"90",c:["Aynı albümün hüzünlü, yavaş tarafı","Ayrılıktan sonra hatırda kalanlar üzerine"]},
+{t:"Kış Güneşi",a:"Tarkan",d:"90",c:["Soğuk mevsim adı taşıyan bir aşk şarkısı","Erken dönem Tarkan'ın en romantik parçalarından"]},
+{t:"Salına Salına Sinsice",a:"Tarkan",d:"90",c:["Yürüyüşü tarif eden uzun bir isim","Kıvrak ritmiyle düğünlerin değişmezi"]},
+{t:"Hepsi Senin mi?",a:"Tarkan",d:"90",c:["Bir soru cümlesi olan şarkı adı","Sanatçının ilk albümünün amiral gemisi"]},
+{t:"Araba",a:"Mustafa Sandal",d:"90",c:["Bir taşıt üzerinden anlatılan gösteriş eleştirisi","Genç bir sanatçıyı bir gecede tanıttı"]},
+{t:"Aya Benzer",a:"Mustafa Sandal",d:"90",c:["Sevgiliyi gökyüzündeki bir cisme benzetir","90'ların sonunun en çok çalan pop parçalarından"]},
+{t:"Karabiberim",a:"Serdar Ortaç",d:"90",c:["Sevgiliye bir baharat adıyla seslenir","Sanatçının ilk büyük çıkışı"]},
+{t:"Abone",a:"Yonca Evcimik",d:"90",c:["Renkli klibi ve dans figürleriyle hatırlanır","90'ların başındaki pop patlamasının simgesi"]},
+{t:"Bandıra Bandıra",a:"Yonca Evcimik",d:"90",c:["Tekrarlı, oyunlu bir isim","Çocukların bile ezberlediği neşeli bir dans şarkısı"]},
+{t:"Hakkını Helal Et",a:"Mirkelam",d:"90",c:["Vedalaşırken söylenen bir cümle isim olmuş","Gitar riffiyle açılan 90'lar klasiği"]},
+{t:"Her Gece",a:"Mirkelam",d:"90",c:["Aynı sanatçının ilk albümünden ikinci büyük hit","İstanbul geceleri kokan bir pop-rock parçası"]},
+{t:"Yemin Ettim",a:"Kayahan",d:"90",c:["Söz veren bir aşığın ağzından","Bestecisi tarafından söylenen bir düğün klasiği"]},
+{t:"Odalarda Işıksızım",a:"Kayahan",d:"90",c:["Karanlık bir ev tarifiyle başlayan isim","Yalnızlık üzerine kurulu duygusal bir parça"]},
+{t:"Med Cezir",a:"Levent Yüksel",d:"90",c:["Denizin gelgitine verilen ad","Bas gitarı ve o pürüzlü sesiyle akılda kalır"]},
+{t:"Uslanmıyor Bu",a:"Levent Yüksel",d:"90",c:["Söz dinlemeyen bir kalpten şikâyet","Aynı sanatçının hareketli tarafı"]},
+{t:"Ateşle Barut",a:"Hakan Peker",d:"90",c:["İki tehlikeli şeyin bir araya gelmesi","90'ların en enerjik erkek vokal çıkışlarından"]},
+{t:"Benimle Oynama",a:"Burak Kut",d:"90",c:["Uyarı içeren bir şarkı adı","Genç bir sanatçının dans pop çıkışı"]},
+{t:"Yaparım Bilirsin",a:"Emel Müftüoğlu",d:"90",c:["İddialı, meydan okuyan bir başlık","Kadın vokalli 90'lar dans pop klasiği"]},
+{t:"Ellerim Bomboş",a:"Fatih Erkoç",d:"90",c:["Caz kokan bir yorum ve o kadife ses","Elleri boş dönen bir adamın hikâyesi"]},
+{t:"Yalnızlık Mevsimi",a:"Kargo",d:"90",c:["Bir mevsim benzetmesiyle anlatılan yalnızlık","90'lar Türk rock'ının radyo klasiği"]},
+{t:"Delikanlım",a:"Yıldız Tilbe",d:"90",c:["Genç bir erkeğe seslenen kadın vokal","Sanatçının kendi bestesi, meyhane klasiği"]},
+{t:"Esmer Günler",a:"Nilüfer",d:"90",c:["Bir renk tarifiyle günleri anlatır","Usta bir kadın sesinden nostaljik pop"]},
+{t:"Vazgeçtim Dünyadan",a:"Şebnem Ferah",d:"90",c:["Her şeyden el etek çekmeyi anlatır","Gitarlı, kadın vokalli 90'lar rock hüznü"]},
+{t:"Sigara",a:"Şebnem Ferah",d:"90",c:["Bir alışkanlık üzerinden anlatılan bağımlılık","Rock albümünün en çok bilinen parçası"]},
+{t:"İstanbul'da Sonbahar",a:"Teoman",d:"90",c:["Bir şehir ve bir mevsim yan yana","Yağmurlu gün çalma listelerinin değişmezi"]},
+{t:"Kaçın Kurası",a:"Sezen Aksu",d:"90",c:["Deyim gibi kurulmuş bir başlık","Minik Serçe'nin oyunlu, kıvrak tarafı"]},
+{t:"Hadi Bakalım",a:"Sezen Aksu",d:"90",c:["Yola çıkarken söylenen bir cümle","Düğünlerin ve kutlamaların şaşmaz açılışı"]},
+{t:"Şinanay",a:"Sezen Aksu",d:"90",c:["Anonim bir nakarat kelimesi ad olmuş","Halayla popun buluştuğu neşeli parça"]},
+{t:"Gülümse",a:"Sezen Aksu",d:"90",c:["Tek kelimelik, moral veren bir isim","Aynı adı taşıyan albümün başrolü"]},
+{t:"Zor Kadın",a:"Sertab Erener",d:"90",c:["Kolay lokma olmayan bir karakter portresi","Sanatçının 90'lardaki en iddialı çıkışı"]},
+/* ---------------- 2000'LER ---------------- */
+{t:"Kuzu Kuzu",a:"Tarkan",d:"00",c:["Terk edilenin geri dönüşünü anlatır","2001'in en çok konuşulan pop parçası"]},
+{t:"Dudu",a:"Tarkan",d:"00",c:["Klibindeki dans çok tartışıldı","Tekrarlı, iki heceli bir isim"]},
+{t:"Hüp",a:"Tarkan",d:"00",c:["Tek heceli, ses taklidi gibi bir ad","Aynı albümün hareketli tarafı"]},
+{t:"Bounce",a:"Tarkan",d:"00",c:["İngilizce adlı, zıplatan bir parça","2000'lerin ortasında kulüplerin favorisi"]},
+{t:"Uyan",a:"Tarkan",d:"00",c:["Uykudan kalkmaya çağıran bir emir","Sanatçının daha karanlık, ritmik dönemi"]},
+{t:"Kop",a:"Mustafa Sandal",d:"00",c:["Kısa, sert, tek heceli bir isim","Elektronik altyapılı 2000'ler dans pop'u"]},
+{t:"İsyankar",a:"Mustafa Sandal",d:"00",c:["Başkaldıran biri anlatılır","Yabancı bir sanatçıyla yapılan versiyonu Avrupa'da tuttu"]},
+{t:"Jest Oldu",a:"Mustafa Sandal",d:"00",c:["Bir davranışa yapılan alaycı yorum","Nakaratı ilk dinlemede ezberlenen türden"]},
+{t:"Melek Yüzlüm",a:"Mustafa Sandal",d:"00",c:["Sevgiliye kanatlı bir benzetme","Yavaş, romantik taraf"]},
+{t:"Mesafe",a:"Serdar Ortaç",d:"00",c:["Aradaki uzaklığı anlatan tek kelime","2000'lerin başında radyoları kapattı"]},
+{t:"Heyecanlısın",a:"Serdar Ortaç",d:"00",c:["Karşıdakinin telaşına yapılan yorum","Sanatçının kendine has kıvrak melodisi"]},
+{t:"Dansöz",a:"Serdar Ortaç",d:"00",c:["Bir meslek adı şarkıya isim olmuş","Oryantal kokan pop düzenlemesi"]},
+{t:"Rakkas",a:"Sezen Aksu",d:"00",c:["Dans eden kişiyi anlatan eski bir kelime","Usta bir kadın vokalden ritmik bir parça"]},
+{t:"Everyway That I Can",a:"Sertab Erener",d:"00",c:["Türkiye'ye tek Eurovision birinciliğini getirdi","İngilizce sözlü, doğu motifli düzenleme"]},
+{t:"Aşk Ölmez Biz Ölürüz",a:"Sertab Erener",d:"00",c:["Sözü atasözü gibi kurulmuş uzun bir isim","Güçlü kadın vokali sergileyen dramatik parça"]},
+{t:"Kumsalda",a:"Sertab Erener",d:"00",c:["Bir yaz mekânında geçen sahne","Deniz ve tatil çağrıştıran hafif bir pop"]},
+{t:"Açık Adres",a:"Sertab Erener",d:"00",c:["Nerede olduğunu söyleyen bir başlık","Ritmik, iddialı 2000'ler pop'u"]},
+{t:"Çakkıdı",a:"Kenan Doğulu",d:"00",c:["Anlamı olmayan, ritmik bir kelime","Klibindeki dansıyla hatırlanır"]},
+{t:"Dursun Zaman",a:"Kenan Doğulu",d:"00",c:["Zamanın durmasını isteyen bir dilek","Funk kokan gitarlı düzenleme"]},
+{t:"Shake It Up Şekerim",a:"Kenan Doğulu",d:"00",c:["Yarı İngilizce yarı Türkçe bir isim","Eurovision sahnesinde temsil etti"]},
+{t:"Tutamıyorum Zamanı",a:"Kenan Doğulu",d:"00",c:["Akıp giden zamandan şikâyet","Aynı sanatçının yavaş, duygusal tarafı"]},
+{t:"Yakar Geçerim",a:"Ajda Pekkan",d:"00",c:["Tehditkâr, iddialı bir başlık","Süperstar'ın 2000'lerdeki güçlü dönüşü"]},
+{t:"Resim",a:"Ajda Pekkan",d:"00",c:["Duvarda kalan bir hatıra nesnesi","Aynı albümün duygusal parçası"]},
+{t:"Ara Sıra",a:"Ajda Pekkan",d:"00",c:["Zaman zaman anlamına gelen bir zarf","Usta sanatçının ritmik geri dönüş şarkısı"]},
+{t:"Acele Etme",a:"Hande Yener",d:"00",c:["Sabır isteyen bir uyarı","Sanatçıyı ilk kez zirveye taşıyan parça"]},
+{t:"Kırmızı",a:"Hande Yener",d:"00",c:["Bir renk adı, tutkuyu simgeliyor","Elektronik pop dönemine geçişin habercisi"]},
+{t:"Kelepçe",a:"Hande Yener",d:"00",c:["Bağlanmayı anlatan sert bir metafor","Karanlık, ritmik kulüp pop'u"]},
+{t:"Romeo",a:"Hande Yener",d:"00",c:["Klasik bir aşk kahramanının adı","2000'lerin sonunun dans pop hiti"]},
+{t:"Bodrum",a:"Hande Yener",d:"00",c:["Bir tatil şehri isim olmuş","Yaz sezonunun açılış şarkılarından"]},
+{t:"Düm Tek Tek",a:"Hadise",d:"00",c:["Darbuka ritmini anlatan bir isim","Eurovision'da dördüncülük getirdi"]},
+{t:"Aşk Kaç Beden Giyer",a:"Hadise",d:"00",c:["Soru soran, kıyafet metaforlu bir başlık","Sanatçının Türkiye'deki ilk büyük hiti"]},
+{t:"Sözde Ayrılık",a:"Gülşen",d:"00",c:["Gerçek olmayan bir ayrılığı anlatır","Sanatçıyı geniş kitleye tanıtan parça"]},
+{t:"Özledim",a:"Murat Boz",d:"00",c:["Tek kelimelik, doğrudan bir itiraf","Sanatçının ilk albümünden çıkış şarkısı"]},
+{t:"Geri Dönüş Olsa",a:"Murat Boz",d:"00",c:["Pişmanlık ve keşke üzerine","2000'lerin sonunda radyoların favorisi"]},
+{t:"Aşkı Bulamam Ben",a:"Murat Boz",d:"00",c:["Umutsuz bir arayışı anlatır","Yavaş tempolu, duygusal erkek vokal"]},
+{t:"Belki Bir Gün Özlersin",a:"Emre Aydın",d:"00",c:["Gelecekte pişman olacak birine söylenmiş","Rock kokan, gitarlı bir veda"]},
+{t:"Afili Yalnızlık",a:"Emre Aydın",d:"00",c:["Yalnızlığa gösterişli bir sıfat eklenmiş","2000'lerin sonundaki üniversiteli kuşağın marşı"]},
+{t:"Her Şeyi Yak",a:"Duman",d:"00",c:["Geçmişten kalan her şeyi yok etme isteği","Grubun ilk dönem gitar riffiyle açılır"]},
+{t:"Bu Akşam",a:"Duman",d:"00",c:["Bir akşam planı gibi başlayan isim","Konserlerde koro halinde söylenen parça"]},
+{t:"Elleri Ellerime",a:"Duman",d:"00",c:["İki insanın dokunuşunu anlatır","Grubun en romantik parçası sayılır"]},
+{t:"Cambaz",a:"mor ve ötesi",d:"00",c:["İpte yürüyen bir gösterici benzetmesi","2000'lerin Türk rock'ının en bilinen şarkılarından"]},
+{t:"Bir Derdim Var",a:"mor ve ötesi",d:"00",c:["İçindeki sıkıntıyı anlatan bir başlık","Bir filmden hafızalara kazındı"]},
+{t:"Deli",a:"mor ve ötesi",d:"00",c:["Tek kelimelik, çılgınlık anlatan bir ad","Eurovision sahnesinde Türkiye'yi temsil etti"]},
+{t:"Sevda Çiçeği",a:"mor ve ötesi",d:"00",c:["Aşkı bir bitkiye benzetir","Grubun daha melodik, yumuşak tarafı"]},
+{t:"Paramparça",a:"Teoman",d:"00",c:["Kırılmış bir kalbin tarifi","Solo kariyerin en çok çalan parçalarından"]},
+{t:"Paparazzi",a:"Teoman",d:"00",c:["Ünlü peşindeki fotoğrafçılara gönderme","Alaycı, gitarlı bir pop-rock"]},
+{t:"Renkli Rüyalar Oteli",a:"Teoman",d:"00",c:["Hayali bir konaklama mekânı","Uzun, sinematik bir isim"]},
+{t:"Can Kırıkları",a:"Şebnem Ferah",d:"00",c:["Kırılan şeyin cam değil ruh olduğu","Kadın vokalli dramatik rock balad"]},
+{t:"Bir Kadın Çizeceksin",a:"maNga",d:"00",c:["Resim yapmayı anlatan bir başlangıç","Rock ile rap'in birleştiği grup şarkısı"]},
+{t:"Cevapsız Sorular",a:"maNga",d:"00",c:["Yanıtı olmayan sorular üzerine","Grubun ilk albümünün çıkış parçası"]},
+{t:"Dünyanın Sonuna Doğmuşum",a:"maNga",d:"00",c:["Kıyamet çağrışımlı, karamsar bir isim","Nu-metal etkili düzenleme"]},
+{t:"Böyle Kahpedir Dünya",a:"Gripin",d:"00",c:["Dünyaya kızgın, sitemkâr bir başlık","Bir dizi jeneriğiyle patladı"]},
+{t:"Aşk Nereden Nereye",a:"Gripin",d:"00",c:["Aşkın gidişatını sorgular","Grubun en çok bilinen baladı"]},
+{t:"Belki Üstümüzden Bir Kuş Geçer",a:"Yüksek Sadakat",d:"00",c:["Gökyüzünden geçen bir canlı imgesi","Uzun isimli, gitarlı rock hiti"]},
+{t:"Dur Yağmur",a:"Pinhani",d:"00",c:["Yağmura verilen bir emir","Sakin, akustik gitarlı grup şarkısı"]},
+{t:"For Real",a:"Athena",d:"00",c:["İngilizce sözlü ska-punk enerjisi","Eurovision'da Türkiye'yi temsil etti"]},
+{t:"Olmaz Oğlan",a:"Hepsi",d:"00",c:["Bir erkeğe söylenen ret cümlesi","Kız grubu furyasının en bilineni"]},
+{t:"Tempo",a:"Hepsi",d:"00",c:["Müzik terimi isim olmuş","Gençlik dizilerinin favori grubundan"]},
+{t:"Elbette",a:"Candan Erçetin",d:"00",c:["Kesinlik bildiren tek kelime","Sakin, şiirsel bir kadın vokal"]},
+{t:"Neden",a:"Candan Erçetin",d:"00",c:["Soru soran tek kelimelik ad","Hüzünlü, dinlendirici bir pop"]},
+{t:"Annem",a:"Candan Erçetin",d:"00",c:["Aile üyesine yazılmış duygusal bir parça","Anneler Günü listelerinin klasiği"]},
+{t:"Bu mudur",a:"Nil Karaibrahimgil",d:"00",c:["Hayal kırıklığı içeren bir soru","Esprili sözleriyle tanınan kadın sanatçıdan"]},
+{t:"Pırlanta",a:"Nil Karaibrahimgil",d:"00",c:["Değerli bir taş isim olmuş","Evlilik teklifleri üzerine alaycı bir bakış"]},
+{t:"Hakkında Her Şeyi Duymak İstiyorum",a:"Nil Karaibrahimgil",d:"00",c:["Cümle gibi uzun bir şarkı adı","Meraklı bir âşığın ağzından"]},
+{t:"Alıştım",a:"Ebru Gündeş",d:"00",c:["Bir duruma kanıksamayı anlatır","Güçlü kadın vokalli dramatik parça"]},
+{t:"Yak Gel",a:"Funda Arar",d:"00",c:["İki emir yan yana","2000'lerin arabesk-pop tınılı hiti"]},
+{t:"Divane",a:"Yaşar",d:"00",c:["Aklını yitirmiş anlamında eski bir kelime","Erkek vokalli, hüzünlü 2000'ler pop'u"]},
+{t:"Bize de Bu Yakışır",a:"Yaşar",d:"00",c:["Kadere razı gelen bir cümle","Ege kokan, hareketli düzenleme"]},
+{t:"Vazgeçtim",a:"Gökhan Özen",d:"00",c:["Pes etmeyi anlatan tek kelime","2000'lerin başında radyoların favorisi"]},
+{t:"İki Melek",a:"Bengü",d:"00",c:["Sayı ve kanatlı varlık bir arada","Kadın vokalli hafif pop"]},
+{t:"Masal",a:"Aydilge",d:"00",c:["Çocukluk anlatısına gönderme","Kız çocuğu masumiyetinde bir pop şarkısı"]},
+{t:"Direniyorum",a:"Rafet El Roman",d:"00",c:["Dayanmaya çalışan birinin ağzından","Duygusal erkek vokalin klasiği"]},
+{t:"Ölürüm",a:"Halil Sezai",d:"00",c:["Uç bir söz veriş","Rock tınılı, yanık sesli bir yorum"]},
+/* ---------------- 2010'LAR ---------------- */
+{t:"Öp",a:"Tarkan",d:"10",c:["Tek heceli bir emir","2010'da megastarın dönüş albümünün açılışı"]},
+{t:"Adımı Kalbine Yaz",a:"Tarkan",d:"10",c:["Kalbe yazılan bir isim imgesi","Aynı albümün romantik baladı"]},
+{t:"Yolla",a:"Tarkan",d:"10",c:["Göndermeyi isteyen bir emir","Ritmik, elektronik bir düzenleme"]},
+{t:"Ateş Et ve Unut",a:"Mustafa Sandal",d:"10",c:["Askeri terim gibi kurulmuş bir başlık","Sanatçının 2010'lardaki çıkışı"]},
+{t:"Kara Kalp",a:"Serdar Ortaç",d:"10",c:["Renk ve organ yan yana","Karanlık temalı bir pop parçası"]},
+{t:"Poşet",a:"Serdar Ortaç",d:"10",c:["Gündelik bir nesne isim olmuş","Şaşırtıcı adıyla çok konuşuldu"]},
+{t:"Ex Aşkım",a:"Kenan Doğulu",d:"10",c:["Eski sevgiliye yapılan bir hitap","Funk gitarlı, dans ettiren düzenleme"]},
+{t:"Baş Harfi Benim",a:"Kenan Doğulu",d:"10",c:["Bir isim oyunu üzerine kurulu","2010'ların ortasında radyo hiti"]},
+{t:"Bambaşka Biri",a:"Ajda Pekkan",d:"10",c:["Değişen bir insanı anlatır","Süperstar'ın 2010'lardaki dans pop dönüşü"]},
+{t:"Ya Ya Ya Ya",a:"Hande Yener",d:"10",c:["Aynı hecenin dört kez tekrarı","Elektronik, kulüp odaklı bir parça"]},
+{t:"Naber",a:"Hande Yener",d:"10",c:["Günlük konuşmadan alınma bir selam","Eski sevgiliye sitem içerir"]},
+{t:"Hasta",a:"Hande Yener",d:"10",c:["Sağlık durumu üzerinden aşk metaforu","Dans pop dönemi şarkılarından"]},
+{t:"Mesajımı Almıştır O",a:"Hadise",d:"10",c:["Telefon mesajı üzerinden anlatılan sitem","Cümle gibi uzun bir başlık"]},
+{t:"Superman",a:"Hadise",d:"10",c:["Bir çizgi roman kahramanına gönderme","Klibi ve dansıyla konuşuldu"]},
+{t:"Prens",a:"Hadise",d:"10",c:["Masal kahramanı gibi bir unvan","2010'ların sonunda yaz hiti"]},
+{t:"Sıfır Tolerans",a:"Hadise",d:"10",c:["Hukuk diline ait bir tabir","İddialı, dans ettiren bir düzenleme"]},
+{t:"Yatcaz Kalkcaz Ordayım",a:"Gülşen",d:"10",c:["Günlük konuşma diliyle yazılmış uzun ad","Sosyal medyada çok paylaşılan bir nakarat"]},
+{t:"Bangır Bangır",a:"Gülşen",d:"10",c:["Yüksek sesi anlatan ikileme","Klibindeki dansıyla akılda kalır"]},
+{t:"Of... Of",a:"Gülşen",d:"10",c:["Sıkıntı belirten bir ünlem iki kez","Kıvrak, oryantal tınılı pop"]},
+{t:"Çalkala",a:"Demet Akalın",d:"10",c:["Sallamayı anlatan bir emir","Düğün ve kına gecelerinin değişmezi"]},
+{t:"Aşk",a:"Demet Akalın",d:"10",c:["Tek kelimelik, en klasik başlık","2010'ların ortasında listelerin tepesinde"]},
+{t:"Nazar",a:"Demet Akalın",d:"10",c:["Kem gözlere karşı bir inanç","Mavi boncuk çağrıştıran bir tema"]},
+{t:"Giderli",a:"Demet Akalın",d:"10",c:["Gitmek fiilinden türetilmiş sıfat","Ayrılık üzerine hareketli bir parça"]},
+{t:"Sallana Sallana",a:"Murat Boz",d:"10",c:["Yürüyüşü tarif eden ikileme","Yaz sezonunun dans hiti"]},
+{t:"Hayat Öpücüğü",a:"Murat Boz",d:"10",c:["Can veren bir öpücük imgesi","2010'ların başında radyo klasiği"]},
+{t:"Janti",a:"Murat Boz",d:"10",c:["Şık, kibar anlamında argo bir kelime","Retro tınılı, dans ettiren düzenleme"]},
+{t:"Kalamam Arkadaş",a:"Murat Boz",d:"10",c:["Arkadaş kalmayı reddeden bir cümle","Ayrılık sonrası mesafe üzerine"]},
+{t:"Vaziyetler",a:"Sıla",d:"10",c:["Durumları anlatan çoğul bir kelime","Kadın vokalli, sözü güçlü bir parça"]},
+{t:"İnşallah",a:"Sıla",d:"10",c:["Dilek bildiren tek kelime","Sanatçının en çok bilinen şarkılarından"]},
+{t:"Acısa da Öldürmez",a:"Sıla",d:"10",c:["Acıya rağmen ayakta kalmak üzerine","Ayrılık sonrası güçlenme şarkısı"]},
+{t:"Yabancı",a:"Sıla",d:"10",c:["Tanıdık birinin uzaklaşmasını anlatır","Sakin, hüzünlü bir düzenleme"]},
+{t:"Boş Yere",a:"Sıla",d:"10",c:["Nafile anlamına gelen bir tabir","Kadın vokalli duygusal pop"]},
+{t:"Ah Be Kardeşim",a:"Yalın",d:"10",c:["Dert yanarken kurulan bir hitap","Erkek vokalli, akustik tınılı hit"]},
+{t:"Anlat Güzel mi Oralar",a:"Yalın",d:"10",c:["Gidenin ardından sorulan bir soru","Uzun, cümle biçiminde bir başlık"]},
+{t:"Keşke",a:"Yalın",d:"10",c:["Pişmanlık bildiren tek kelime","Sade, duygusal bir balad"]},
+{t:"Senden Daha Güzel",a:"Duman",d:"10",c:["Bir karşılaştırma cümlesi","Grubun en çok dinlenen 2010'lar parçası"]},
+{t:"Eyvallah",a:"Duman",d:"10",c:["Kabullenmeyi anlatan tek kelime","Konserlerde hep bir ağızdan söylenir"]},
+{t:"Sen Yağmursun",a:"Gripin",d:"10",c:["Sevgiliyi bir hava olayına benzetir","Gitarlı, hüzünlü bir grup baladı"]},
+{t:"Buzdan Şato",a:"Model",d:"10",c:["Eriyip gidecek bir yapı benzetmesi","Grubun en bilinen şarkısı"]},
+{t:"Aşk Yok Olmaktır",a:"Model",d:"10",c:["Aşkı tanımlamaya çalışan bir cümle","2010'ların gitar pop'u"]},
+{t:"Sana Değer",a:"Kolpa",d:"10",c:["Birini değerli bulmayı anlatır","Grup vokalli romantik parça"]},
+{t:"Ne Güzel Güldün",a:"Pinhani",d:"10",c:["Gülüşe yapılan bir iltifat","Sakin, akustik grup şarkısı"]},
+{t:"We Could Be the Same",a:"maNga",d:"10",c:["İngilizce sözlü, benzerlik üzerine","Eurovision'da ikincilik getirdi"]},
+{t:"Yaparsın Aşkım",a:"Nil Karaibrahimgil",d:"10",c:["Cesaret veren bir cümle","Motivasyon şarkısı gibi kullanılır"]},
+{t:"Eksik",a:"Mustafa Ceceli",d:"10",c:["Tamamlanmamış olmayı anlatan tek kelime","Erkek vokalli duygusal 2010'lar pop'u"]},
+{t:"Şarkı",a:"Mustafa Ceceli",d:"10",c:["Müziğin kendisi isim olmuş","Sade, romantik bir düzenleme"]},
+{t:"Gül Rengi",a:"Mustafa Ceceli",d:"10",c:["Bir çiçeğin rengiyle kurulan benzetme","Düğün listelerinin klasiği"]},
+{t:"Bak Bir Varmış Bir Yokmuş",a:"Mustafa Ceceli",d:"10",c:["Masal girişine gönderme yapan uzun ad","Hikâye anlatır gibi bir aşk şarkısı"]},
+{t:"Sen Sevda mısın",a:"Buray",d:"10",c:["Sevgiliye sorulan bir kimlik sorusu","Sanatçının çıkış parçası"]},
+{t:"İstersen",a:"Buray",d:"10",c:["Şart bildiren tek kelime","Piyano ağırlıklı duygusal parça"]},
+{t:"Mecburen",a:"Buray",d:"10",c:["Zorunluluk bildiren bir zarf","2010'ların sonunda çok dinlendi"]},
+{t:"Kalbimin Tek Sahibine",a:"İrem Derici",d:"10",c:["Mektup başlığı gibi bir isim","Sanatçıyı tanıtan büyük çıkış"]},
+{t:"Zalim",a:"İrem Derici",d:"10",c:["Acımasız birini anlatan tek kelime","Kadın vokalli, iddialı pop"]},
+{t:"Adeyyo",a:"Ece Seçkin",d:"10",c:["Anlamı olmayan, ritmik bir nakarat kelimesi","Yaz sezonunun dans hiti"]},
+{t:"Cevapsız Çınlama",a:"Aleyna Tilki",d:"10",c:["Telefon terimi üzerinden anlatılan ilgisizlik","Çok genç yaşta çıkış yapan bir sesten"]},
+{t:"Sen Olsan Bari",a:"Aleyna Tilki",d:"10",c:["Bir dilek cümlesi","Milyonlarca izlenen klibiyle konuşuldu"]},
+{t:"Roman",a:"Edis",d:"10",c:["Bir edebiyat türü isim olmuş","2010'ların sonunda listelerin tepesinde"]},
+{t:"Martılar",a:"Edis",d:"10",c:["Deniz kuşları isim olmuş","İstanbul ve yaz çağrıştıran pop"]},
+{t:"Fikrimden Geceleri",a:"Mabel Matiz",d:"10",c:["Eski bir şiir dili kullanılan başlık","Alternatif pop'un öne çıkan sesi"]},
+{t:"Antidepresan",a:"Mabel Matiz",d:"10",c:["İlaç adı şarkıya isim olmuş","Sevgiliyi bir tedaviye benzetir"]},
+{t:"Miş Miş",a:"Simge",d:"10",c:["Tekrarlı, sevimli bir ikileme","Yaz sezonunun dans pop hiti"]},
+{t:"Yankı",a:"Simge",d:"10",c:["Sesin geri dönmesi isim olmuş","Kadın vokalli hareketli parça"]},
+{t:"Ela",a:"Reynmen",d:"10",c:["Bir göz rengi isim olmuş","İnternet fenomeninden şarkıcıya dönüşen biri"]},
+{t:"Eteği Belinde",a:"Manuş Baba",d:"10",c:["Kıyafet tarifiyle kurulan bir başlık","Farklı, nostaljik bir yorum tarzı"]},
+{t:"Dön Bebeğim",a:"Manuş Baba",d:"10",c:["Gidene yapılan bir çağrı","Aynı sanatçının hüzünlü tarafı"]},
+{t:"Beni Vur",a:"Ziynet Sali",d:"10",c:["Uç bir istek içeren emir cümlesi","Kadın vokalli dramatik pop"]},
+{t:"Padişah",a:"Sibel Can",d:"10",c:["Osmanlı unvanı isim olmuş","Sevgiliyi hükümdara benzetir"]},
+{t:"Güzelim",a:"Ayşe Hatun Önal",d:"10",c:["Sevgiliye seslenen bir sıfat","Klibiyle konuşulan dans pop parçası"]},
+{t:"Sen Yoluna Ben Yoluma",a:"Gökhan Türkmen",d:"10",c:["Ayrılığı iki yol imgesiyle anlatır","Erkek vokalli sakin bir balad"]},
+{t:"Sen Gelmez Oldun",a:"Bilal Sonses",d:"10",c:["Beklenen birinin gelmeyişi","Arabesk tınılı 2010'lar sonu pop'u"]},
+/* ---------------- 2020'LER ---------------- */
+{t:"Geççek",a:"Tarkan",d:"20",c:["Ağız diliyle yazılmış tek kelime","Pandemi sonrası umut şarkısı gibi karşılandı"]},
+{t:"Öyle Kolaysa",a:"Mabel Matiz",d:"20",c:["Meydan okuyan bir şart cümlesi","2020'lerin alternatif pop hiti"]},
+{t:"Merhametim Yok",a:"Melike Şahin",d:"20",c:["Acımasızlık ilan eden bir cümle","Kadın vokalli, teatral bir yorum"]},
+{t:"Nalan",a:"Emir Can İğrek",d:"20",c:["Bir kadın ismi şarkıya ad olmuş","2020'lerin başında viral olan gitarlı parça"]},
+{t:"Lolipop",a:"Gülşen",d:"20",c:["Bir şeker adı isim olmuş","Renkli klibiyle dikkat çeken dans pop"]},
+{t:"Dinle",a:"Aleyna Tilki",d:"20",c:["Kulak vermeyi isteyen bir emir","2020 başında çok konuşulan bir klip"]},
+{t:"Sana Bir Şey Olmasın",a:"Edis",d:"20",c:["Sevdiğine dua gibi bir dilek","2020'lerin başında listelerin tepesinde"]},
+{t:"Karakol",a:"Mabel Matiz",d:"20",c:["Bir resmi kurum adı isim olmuş","Alternatif pop'un anlatıcı tarzı"]},
+{t:"Aslan Gibi",a:"Melike Şahin",d:"20",c:["Bir hayvan benzetmesiyle güç anlatımı","Teatral yorumuyla tanınan kadın vokal"]},
+{t:"Sarhoş",a:"Emir Can İğrek",d:"20",c:["Bir hâli anlatan tek kelime","Gitarlı, meyhane havasında 2020'ler parçası"]},
+{t:"Derdim Olsun",a:"Reynmen",d:"20",c:["Dert sahibi olmayı isteyen bir cümle","İnternette hızla viral olan bir çıkış"]}
+];
+
+/* ============================================================
+   OYUN MOTORU
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const ERA_LABEL = {"90":"90'LAR","00":"2000'LER","10":"2010'LAR","20":"2020'LER"};
+
+const state = {
+  mode: "ipucu",
+  eras: ["90","00","10","20"],
+  seconds: 90,
+  teams: 1,
+  deck: [], idx: 0, revealed: false,
+  round: 0, scores: [0,0], results: [[],[]],
+  timeLeft: 0, timer: null, paused: false
+};
+
+/* ---------- ayarları hatırla ---------- */
+function saveCfg(){
+  try{ localStorage.setItem("binakarat", JSON.stringify({
+    mode:state.mode, eras:state.eras, seconds:state.seconds, teams:state.teams
+  })); }catch(e){}
+}
+function loadCfg(){
+  try{
+    const c = JSON.parse(localStorage.getItem("binakarat")||"null");
+    if(!c) return;
+    if(c.mode) state.mode = c.mode;
+    if(Array.isArray(c.eras) && c.eras.length) state.eras = c.eras;
+    if(typeof c.seconds === "number") state.seconds = c.seconds;
+    if(c.teams) state.teams = c.teams;
+  }catch(e){}
+}
+
+/* ---------- ana ekran ---------- */
+function paintHome(){
+  document.querySelectorAll("#modeList .mode").forEach(el=>
+    el.classList.toggle("sel", el.dataset.mode === state.mode));
+  document.querySelectorAll("#eraChips .chip").forEach(el=>
+    el.classList.toggle("sel", state.eras.includes(el.dataset.era)));
+  document.querySelectorAll("#timeChips .chip").forEach(el=>
+    el.classList.toggle("sel", +el.dataset.sec === state.seconds));
+  document.querySelectorAll("#teamChips .chip").forEach(el=>
+    el.classList.toggle("sel", +el.dataset.team === state.teams));
+  $("#totalCount").textContent = pool().length;
+}
+function pool(){ return SONGS.filter(s => state.eras.includes(s.d)); }
+
+document.querySelectorAll("#modeList .mode").forEach(el=>{
+  el.onclick = () => { state.mode = el.dataset.mode; saveCfg(); paintHome(); };
+});
+document.querySelectorAll("#eraChips .chip").forEach(el=>{
+  el.onclick = () => {
+    const e = el.dataset.era;
+    if(state.eras.includes(e)){
+      if(state.eras.length === 1) return;         // en az bir dönem açık kalsın
+      state.eras = state.eras.filter(x => x !== e);
+    } else state.eras.push(e);
+    saveCfg(); paintHome();
+  };
+});
+document.querySelectorAll("#timeChips .chip").forEach(el=>{
+  el.onclick = () => { state.seconds = +el.dataset.sec; saveCfg(); paintHome(); };
+});
+document.querySelectorAll("#teamChips .chip").forEach(el=>{
+  el.onclick = () => { state.teams = +el.dataset.team; saveCfg(); paintHome(); };
+});
+
+/* ---------- ekran geçişi ---------- */
+function show(id){
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("on"));
+  $("#"+id).classList.add("on");
+}
+
+/* ---------- deste ---------- */
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function startRound(){
+  state.deck = shuffle(pool().slice());
+  state.idx = 0;
+  state.revealed = false;
+  state.results[state.round] = [];
+  state.scores[state.round] = 0;
+  state.timeLeft = state.seconds;
+  show("game");
+  renderCard();
+  updateTop();
+  stopTimer();
+  if(state.seconds > 0){
+    state.timer = setInterval(tick, 1000);
+  }
+}
+
+function tick(){
+  if(state.paused) return;
+  state.timeLeft--;
+  updateTop();
+  if(state.timeLeft <= 0) endRound();
+}
+function stopTimer(){ if(state.timer){ clearInterval(state.timer); state.timer = null; } }
+
+function updateTop(){
+  const t = $("#timePill");
+  if(state.seconds === 0){ t.textContent = "∞"; t.classList.remove("warn"); }
+  else {
+    t.textContent = Math.max(0, state.timeLeft);
+    t.classList.toggle("warn", state.timeLeft <= 10);
+  }
+  const label = state.teams === 2 ? ("Takım " + (state.round + 1) + " · ") : "Skor ";
+  $("#teamPill").textContent = label + state.scores[state.round];
+}
+
+function renderCard(){
+  const s = state.deck[state.idx];
+  if(!s){ endRound(); return; }
+  const title = $("#cTitle"), artist = $("#cArtist"), clue = $("#cClue");
+  title.textContent = s.t;
+  title.classList.toggle("long", s.t.length > 18);
+  artist.textContent = s.a;
+  $("#cBadge").textContent = ERA_LABEL[s.d];
+
+  const showTitle = state.mode !== "ipucu" || state.revealed;
+  title.classList.toggle("hidden-title", !showTitle);
+  artist.classList.toggle("hidden-title", !showTitle);
+
+  if(state.mode === "nakarat" && !state.revealed){
+    clue.innerHTML = '<div style="opacity:.75">Nakaratı sen söyle 🎤</div>';
+  } else {
+    clue.innerHTML = s.c.map(x => "<div>" + x + "</div>").join("");
+  }
+
+  $("#revealBtn").textContent =
+    state.mode === "ipucu" ? (state.revealed ? "Kapat" : "Cevabı göster")
+    : state.mode === "nakarat" ? (state.revealed ? "İpucunu gizle" : "İpucu ver")
+    : "İpucu / cevap açık";
+  $("#revealBtn").style.display = state.mode === "acik" ? "none" : "block";
+}
+
+function toggleReveal(){
+  if(state.mode === "acik") return;
+  state.revealed = !state.revealed;
+  renderCard();
+}
+
+function next(correct){
+  const s = state.deck[state.idx];
+  if(s){
+    state.results[state.round].push({s, correct});
+    if(correct) state.scores[state.round]++;
+  }
+  state.idx++;
+  state.revealed = false;
+  if(state.idx >= state.deck.length){ endRound(); return; }
+  flyCard(correct);
+  renderCard();
+  updateTop();
+  if(navigator.vibrate) navigator.vibrate(correct ? 18 : 8);
+}
+
+function flyCard(correct){
+  const c = $("#card");
+  c.style.transition = "none";
+  c.style.transform = "translateX(" + (correct ? 60 : -60) + "px) rotate(" + (correct ? 5 : -5) + "deg)";
+  c.style.opacity = "0";
+  requestAnimationFrame(()=>{
+    c.style.transition = "transform .22s ease, opacity .22s ease";
+    c.style.transform = "translateX(0) rotate(0deg)";
+    c.style.opacity = "1";
+  });
+}
+
+/* ---------- tur sonu ---------- */
+function endRound(){
+  stopTimer();
+  const res = state.results[state.round] || [];
+  const score = state.scores[state.round] || 0;
+
+  if(state.teams === 2 && state.round === 0){
+    $("#endTitle").textContent = "Takım 1 turu bitti";
+    $("#endScore").textContent = score;
+    $("#endSub").textContent = "doğru tahmin · sıra Takım 2'de";
+    $("#againBtn").textContent = "Takım 2 başlasın";
+  } else if(state.teams === 2){
+    const a = state.scores[0], b = state.scores[1];
+    $("#endTitle").textContent = a === b ? "Berabere!" : (a > b ? "Takım 1 kazandı" : "Takım 2 kazandı");
+    $("#endScore").textContent = a + " – " + b;
+    $("#endSub").textContent = "Takım 1 – Takım 2";
+    $("#againBtn").textContent = "Yeni maç";
+  } else {
+    $("#endTitle").textContent = "Tur bitti";
+    $("#endScore").textContent = score;
+    $("#endSub").textContent = res.length + " karttan " + score + " doğru";
+    $("#againBtn").textContent = "Yeni tur";
+  }
+
+  $("#endList").innerHTML = res.map(r =>
+    '<div class="item"><span class="m">' + (r.correct ? "✅" : "⏭️") + '</span>' +
+    '<div><b>' + r.s.t + '</b><br><span>' + r.s.a + " · " + ERA_LABEL[r.s.d] + '</span></div></div>'
+  ).join("") || '<div class="tiny">Bu turda kart oynanmadı.</div>';
+
+  show("end");
+}
+
+/* ---------- butonlar ---------- */
+$("#startBtn").onclick = () => { state.round = 0; state.scores = [0,0]; state.results = [[],[]]; startRound(); };
+$("#okBtn").onclick    = () => next(true);
+$("#passBtn").onclick  = () => next(false);
+$("#revealBtn").onclick = toggleReveal;
+$("#card").onclick = toggleReveal;
+
+$("#quitBtn").onclick = () => { state.paused = true; $("#sheet").classList.add("on"); };
+$("#contBtn").onclick = () => { state.paused = false; $("#sheet").classList.remove("on"); };
+$("#endNowBtn").onclick = () => { state.paused = false; $("#sheet").classList.remove("on"); endRound(); };
+
+$("#againBtn").onclick = () => {
+  if(state.teams === 2 && state.round === 0){ state.round = 1; startRound(); }
+  else { state.round = 0; state.scores = [0,0]; state.results = [[],[]]; startRound(); }
+};
+$("#homeBtn").onclick = () => { stopTimer(); show("home"); paintHome(); };
+
+/* ---------- kaydırma (swipe) ---------- */
+(function(){
+  const c = $("#card");
+  let x0 = null, y0 = null, dx = 0, moved = false;
+  c.addEventListener("touchstart", e => {
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; dx = 0; moved = false;
+    c.style.transition = "none";
+  }, {passive:true});
+  c.addEventListener("touchmove", e => {
+    if(x0 === null) return;
+    dx = e.touches[0].clientX - x0;
+    const dy = e.touches[0].clientY - y0;
+    if(Math.abs(dx) < Math.abs(dy)) return;
+    if(Math.abs(dx) > 8) moved = true;
+    c.style.transform = "translateX(" + dx + "px) rotate(" + (dx/22) + "deg)";
+  }, {passive:true});
+  c.addEventListener("touchend", () => {
+    c.style.transition = "transform .2s ease";
+    if(moved && Math.abs(dx) > 90){ next(dx > 0); }
+    else { c.style.transform = "translateX(0) rotate(0deg)"; }
+    x0 = null; y0 = null;
+  });
+  // kaydırma sonrası tıklama tetiklenmesin
+  c.addEventListener("click", e => { if(moved){ e.stopPropagation(); moved = false; } }, true);
+})();
+
+/* ---------- klavye (masaüstünde test için) ---------- */
+document.addEventListener("keydown", e => {
+  if(!$("#game").classList.contains("on")) return;
+  if(e.key === "ArrowRight") next(true);
+  if(e.key === "ArrowLeft") next(false);
+  if(e.key === " "){ e.preventDefault(); toggleReveal(); }
+});
+
+/* ---------- başlat ---------- */
+loadCfg();
+paintHome();
+</script>
+</body>
+</html>
